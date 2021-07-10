@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme.Splash" parent="Theme.AppCompat.DayNight.NoActionBar">
+        // あらかじめdrawableに表示するスプラッシュ画像を用意する
+        <item name="android:windowBackground">@drawable/dog</item>
+    </style>
+</resources>

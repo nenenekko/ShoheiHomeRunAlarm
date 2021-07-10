@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Shohei HomeRun Alarm</string>
+    <string name="initial_info_label">(info)</string>
+    <string name="time_format">%d秒間 振りまくれ！</string>
+    <string name="info_format">振り強度：%.1f</string>
+    <string name="button">YourAppName</string>
+    <string name="no_data">"No Data"</string>
+    <string name="pick_time">Pick Time</string>
+</resources>
