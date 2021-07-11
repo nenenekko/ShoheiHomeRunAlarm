@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 
 interface CustomAdapterListener {
-    fun clicked(alarm: Alarm)
+    fun clicked(alarm: Alarm,view: View)
 }
 
 class CustomAdapter(context: Context, var mAlarmList: List<Alarm>,  val listener: CustomAdapterListener) : ArrayAdapter<Alarm>(context, 0, mAlarmList) {
@@ -31,22 +31,22 @@ class CustomAdapter(context: Context, var mAlarmList: List<Alarm>,  val listener
         val imageView = view?.findViewById<ImageView>(R.id.image)
         imageView?.setImageResource(alarm.imageId)
 
-        val name = view?.findViewById<TextView>(R.id.name)
-        name?.text = alarm.hour.toString() + ":" + alarm.minute.toString()
-
-        val age = view?.findViewById<TextView>(R.id.age)
-        age?.text = "${alarm.hour} 才"
+        val seted_time = view?.findViewById<TextView>(R.id.seted_time)
+        var hour_text = alarm.hour.toString()
+        var minute_text = alarm.minute.toString()
+        if(minute_text.length == 1) minute_text = "0" + minute_text
+        seted_time?.text = hour_text + ":" + minute_text
 
         val button = view?.findViewById<Button>(R.id.button)
         button?.setOnClickListener {
-            listener.clicked(alarm)
+            listener.clicked(alarm,it)
         }
 
         return view!!
     }
 
     // リスト更新用の関数を実装
-    fun updateAnimalList(alarmList: List<Alarm>) {
+    fun updateAlarmList(alarmList: List<Alarm>) {
         mAlarmList = alarmList
         // 再描画
         notifyDataSetChanged()

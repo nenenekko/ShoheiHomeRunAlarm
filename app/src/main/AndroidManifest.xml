@@ -22,8 +22,12 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".AlarmNortificationActivity"></activity>
+        <activity android:name=".AlarmSwingActivity"></activity>
+        <activity android:name=".WebpageActivity"></activity>
+        <activity android:name=".OhtaniClassifierActivity"></activity>
         <receiver android:name=".AlarmBroadcastReceiver"
+            android:process=":remote" />
+        <receiver android:name=".ShoheiHomerunReceiver"
             android:process=":remote" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

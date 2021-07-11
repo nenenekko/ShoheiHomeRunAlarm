@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="12dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#fdc">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,29 +19,59 @@
             android:orientation="horizontal"
             android:padding="12dp">
 
-            <Button
-                android:id="@+id/button1"
+            <Switch android:id="@+id/toggle_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button"
-                app:layout_constraintBottom_toTopOf="@+id/button2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textColor="#3e3e3e"
+                android:text="大谷モード"/>
 
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button2"
-                tools:layout_editor_absoluteX="160dp"
-                tools:layout_editor_absoluteY="492dp" />
         </LinearLayout>
 
         <ListView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp">
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="追加"
+                tools:layout_editor_absoluteX="160dp"
+                tools:layout_editor_absoluteY="492dp" />
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全削除"
+                app:layout_constraintBottom_toTopOf="@+id/button2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test"
+                app:layout_constraintBottom_toTopOf="@+id/button2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="分類"
+                app:layout_constraintBottom_toTopOf="@+id/button2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
