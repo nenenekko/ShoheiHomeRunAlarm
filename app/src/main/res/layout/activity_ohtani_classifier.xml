@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#fdc">
 
     <Button
         android:id="@+id/showGalleryBtn"
@@ -22,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="テストデータ"
+        android:text="ホームへ"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/inferrenceBtn"
         app:layout_constraintHorizontal_bias="0.5"
@@ -33,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="RUN"
+        android:text="判定"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/showGalleryBtn"
         app:layout_constraintHorizontal_bias="0.5"
@@ -62,6 +63,7 @@
             android:id="@+id/resultTextView"
             android:layout_width="match_parent"
             android:text="result here ..."
+            android:textSize="36sp"
             android:layout_height="wrap_content"
             android:gravity="center" />
     </ScrollView>

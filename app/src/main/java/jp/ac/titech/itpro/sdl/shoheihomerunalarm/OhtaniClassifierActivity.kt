@@ -53,8 +53,10 @@ class OhtaniClassifierActivity: AppCompatActivity() {
 
         // テストデータの入力
         inputTestDataBtn.setOnClickListener {
-            bitmap = getTestImgData()
-            previewImg.setImageBitmap(bitmap)
+            val notification = Intent(applicationContext, MainActivity::class.java)
+            //画面起動に必要
+            notification.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            applicationContext!!.startActivity(notification)
         }
     }
 

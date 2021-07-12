@@ -1,37 +1,35 @@
 package jp.ac.titech.itpro.sdl.shoheihomerunalarm
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.media.Image
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_alarm.*
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.alarm_item.*
+import kotlinx.android.synthetic.main.alarm_item.view.*
+import kotlin.random.Random
 
 
 class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
-    private var homeruned: Boolean = false
+    private var swing_count: Int = 0
     private var period = 0
+    private var swinged_flag: Boolean = false
 
     //mp3音源
     private var mp: MediaPlayer? = null
-
-
 
     //加速度表示
     private var manager: SensorManager? = null
@@ -44,23 +42,31 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
     private var rx = 0f
     private var ry = 0f
     private var rz = 0f
-    private var vx = 0f
-    private var vy = 0f
-    private var vz = 0f
     private var accuracy = 0
     private var weighted_acceleration = 0.0
     private var moving_acceleration = 0.0
-    private var homerun_bound = 20.0
 
     //タイマーが起動しているか否か
     private var shakeflag = false
     private val delay = SensorManager.SENSOR_DELAY_NORMAL
     private val type = Sensor.TYPE_ACCELEROMETER
+
+    //ピッチングモードかバッティングモードか
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alarm)
         val imageView: ImageView = findViewById(R.id.alarm_image_view)
-        imageView.setBackgroundResource(R.drawable.bating)
+
+        val randomInt = Random.nextInt(10)
+        if(randomInt < 5){
+            imageView.setBackgroundResource(R.drawable.bating_swing)
+            val odaiView: ImageView = findViewById(R.id.odai)
+            odaiView.setImageResource(R.drawable.odai_swing)
+        }else{
+            imageView.setBackgroundResource(R.drawable.pitching_swing)
+            val odaiView: ImageView = findViewById(R.id.odai)
+            odaiView.setImageResource(R.drawable.odai_pitching)
+        }
 
         period = 100
         shakeflag = false
@@ -90,9 +96,7 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
 
         //音を鳴らす
         if (mp == null) {
-            //resのrawディレクトリにtest.mp3を置いてある
-            mp = MediaPlayer.create(this, R.raw.test)
-
+            mp = MediaPlayer.create(this, R.raw.gone_big_fly_ohtanisan)
             //ループ設定
             mp!!.isLooping = true
         }
@@ -109,7 +113,6 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
         if (mp != null) {
             mp!!.stop()
             mp!!.release()
-            //stopAlarm()
         }
     }
 
@@ -128,7 +131,6 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
 
 
     override fun onSensorChanged(event: SensorEvent) {
-
         //重力加速度の除去
         gx = ALPHA * gx + (1 - ALPHA) * event.values[0]
         gy = ALPHA * gy + (1 - ALPHA) * event.values[1]
@@ -139,8 +141,13 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
         Log.i(TAG, "x=$rx, y=$ry, z=$rz")
         weighted_acceleration = Math.sqrt((rx * rx + ry * ry + rz * rz).toDouble())
         Log.i(TAG, weighted_acceleration.toString())
-        if (weighted_acceleration > homerun_bound) {
-            homeruned = true
+        if (weighted_acceleration > homerun_bound && !swinged_flag) {
+            swing_count++
+            if(swing_count > swing_skii) swing_count = swing_skii
+            count_swing.text = "      " + swing_count.toString() + "回"
+            swinged_flag = true
+        }else if(weighted_acceleration < swinged_skii){
+            swinged_flag = false
         }
     }
 
@@ -150,8 +157,8 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
     }
 
     override fun run() {
-        //ユーザがホームランを打ったら
-        if (homeruned) {
+        //ユーザがスイングを規定回数行ったら
+        if (swing_count >= swing_skii) {
             Toast.makeText(applicationContext, "アラーム終了！", Toast.LENGTH_LONG).show()
 
             //mp音楽の停止
@@ -179,10 +186,9 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
         manager!!.unregisterListener(this)
 
         //各フィールド変数を初期化
-        homeruned = false
+        swing_count = 0
         weighted_acceleration = 0.0
         moving_acceleration = 0.0
-        homerun_bound = 20.0
         shakeflag = false
 
     }
@@ -192,5 +198,8 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
         private const val GRAPH_REFRESH_PERIOD_MS: Long = 20
         private const val ALPHA = 0.75f
         private val TAG = AlarmSwingActivity::class.java.simpleName
+        private const val swing_skii = 5
+        private const val swinged_skii = 20
+        private const val homerun_bound = 20.0
     }
 }

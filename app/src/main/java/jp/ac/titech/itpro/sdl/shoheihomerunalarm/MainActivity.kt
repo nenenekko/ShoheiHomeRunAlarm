@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), CustomAdapterListener, TimePickerDialo
                         Alarm(
                                 hour_mintue[0].toInt(),
                                 hour_mintue[1].toInt(),
-                                R.drawable.dog
+                                R.drawable.shohei_hudan
                         )
                 )
                 Log.d(TAG, "Get json : $value")
@@ -189,7 +189,7 @@ class MainActivity : AppCompatActivity(), CustomAdapterListener, TimePickerDialo
 
         //アラーム時刻をリストで表示
         val hour_mintue = value.split(":".toRegex()).toTypedArray()
-        mAlarmList.add(Alarm(hour_mintue[0].toInt(), hour_mintue[1].toInt(), R.drawable.dog))
+        mAlarmList.add(Alarm(hour_mintue[0].toInt(), hour_mintue[1].toInt(), R.drawable.shohei_hudan))
         // CustomAdapterに実装したリスト更新用の関数を呼ぶ
         mCustomAdapter.updateAlarmList(mAlarmList)
 

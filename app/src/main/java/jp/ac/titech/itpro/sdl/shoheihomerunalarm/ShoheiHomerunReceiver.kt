@@ -15,7 +15,7 @@ import twitter4j.TwitterFactory
 class ShoheiHomerunReceiver : BroadcastReceiver() {
     var HomeRunCounter = 30
     var user_list = listOf("30R9gmaMUy3guDJ", "livedoornews")
-    var homerun_words = listOf("大谷", "ホームラン")
+    var homerun_words = listOf("大谷", "号")
 
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -46,32 +46,30 @@ class ShoheiHomerunReceiver : BroadcastReceiver() {
     }
 
     suspend fun checkInfluentialUser():Boolean {
-        var is_homerun = arrayOf(false, false, false)
+        var homerun_count = 0
 
         val tf = TwitterFactory()
         val twitter = tf.getInstance()
         twitter.oAuth2Token                   //ベアラートークンの取得
-        for (i in 0 until 2) {
+        for (i in 0 until user_list.size) {
             var query1 = Query().query("from:" + user_list[i])
             var result: QueryResult = twitter.search(query1)
 
             for (status in result.tweets) {            //取得したツイート数分ログに出力
                 Log.d("status", status.text)
                 val regex = Regex(status.text)
-                if (regex.containsMatchIn(homerun_words[0]) && regex.containsMatchIn(homerun_words[1]) && regex.containsMatchIn(HomeRunCounter.toString()))
-                    return true
+                var hit_word_count = 0
+                for(word in homerun_words){
+                    if(regex.containsMatchIn(word)){
+                        hit_word_count++
+                    }
+                }
+                if(hit_word_count == homerun_words.size)
+                    homerun_count++
+                    break
             }
             Log.d("status", "☆☆☆☆☆☆☆☆☆")
         }
-        return false
+        return homerun_count >= user_list.size / 2
     }
-
-    /*
-    suspend fun ConfirmHomerun():Boolean{
-        val tf = TwitterFactory()
-        val twitter = tf.getInstance()
-        val result = twitter?.search(Query(HomeRunCounter.toString() + "号ホームラン"))
-        return result.getTweets().size > 10
-    }
-     */
 }
