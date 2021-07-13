@@ -32,13 +32,14 @@ class OhtaniClassifierActivity: AppCompatActivity() {
             if (bitmap == null) return@setOnClickListener
             lifecycleScope.launch {
                 // 推論結果を取得
-                val outputs = classifyImage(bitmap!!)
+                val output = classifyImage(bitmap!!)
                 // viewにフォーマットした推論結果を2個表示
-                resultTextView.text = outputs.sortedByDescending { it.score }
-                    .take(2)
-                    .joinToString("\n") { category ->
-                        "Label: ${category.label}, Score: ${"%.2f".format(category.score * 100)}%"
-                    }
+                if(output){
+                    resultTextView.text = "あなたは大谷翔平ですね！？！？"
+                }
+                else{
+                    resultTextView.text = "大谷翔平！！ \n ...ではなさそう．．"
+                }
             }
         }
 
@@ -80,7 +81,7 @@ class OhtaniClassifierActivity: AppCompatActivity() {
         val output = model.process(image)  // 推論
         val categoryList = output.probabilityAsCategoryList
         model.close()
-        return@withContext categoryList
+        return@withContext categoryList[0].score >= 0.5
     }
 
     // テスト画像の読み込み
