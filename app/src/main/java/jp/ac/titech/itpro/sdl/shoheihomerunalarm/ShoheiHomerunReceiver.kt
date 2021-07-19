@@ -14,7 +14,7 @@ import twitter4j.TwitterFactory
 
 class ShoheiHomerunReceiver : BroadcastReceiver() {
     var HomeRunCounter = 30
-    var user_list = listOf("30R9gmaMUy3guDJ", "livedoornews")
+    var user_list = listOf("30R9gmaMUy3guDJ","vvMLBvv","Ohtani_MLB") //"livedoornews","YahooNewsTopics"
     var homerun_words = listOf("大谷", "号")
 
 
@@ -29,7 +29,7 @@ class ShoheiHomerunReceiver : BroadcastReceiver() {
                 val homerun = async(context = Dispatchers.IO) {
                     checkInfluentialUser()
                 }.await()
-                if(!homerun){
+                if(homerun){
                     Log.d("status", "ホームラン！！！！！")
                     //アラームを受け取って起動するActivityを指定、起動
                     val notification = Intent(context, AlarmSwingActivity::class.java)
@@ -38,9 +38,9 @@ class ShoheiHomerunReceiver : BroadcastReceiver() {
                     context!!.startActivity(notification)
                     break
                 }
-                delay(5 * 1000)
+                delay(60 * 1000)
                 counter++
-                if(counter == 10) break
+                if(counter >= 300) break
             }
         }
     }
@@ -64,9 +64,10 @@ class ShoheiHomerunReceiver : BroadcastReceiver() {
                         hit_word_count++
                     }
                 }
-                if(hit_word_count == homerun_words.size)
+                if(hit_word_count == homerun_words.size){
                     homerun_count++
                     break
+                }
             }
             Log.d("status", "☆☆☆☆☆☆☆☆☆")
         }

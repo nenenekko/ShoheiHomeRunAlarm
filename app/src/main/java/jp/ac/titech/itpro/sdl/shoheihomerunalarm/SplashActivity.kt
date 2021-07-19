@@ -15,7 +15,7 @@ class SplashActivity : AppCompatActivity()  {
         setContentView(R.layout.activity_splash)
         val imageView: ImageView = findViewById(R.id.splash_image_view)
 
-        imageView.setBackgroundResource(R.drawable.pitching)
+        imageView.setBackgroundResource(R.drawable.title)
 
         CoroutineScope(Dispatchers.Main).launch {
             delay(2000)

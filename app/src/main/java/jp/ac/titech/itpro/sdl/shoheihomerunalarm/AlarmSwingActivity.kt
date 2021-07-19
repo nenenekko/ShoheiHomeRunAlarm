@@ -27,6 +27,7 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
     private var swing_count: Int = 0
     private var period = 0
     private var swinged_flag: Boolean = false
+    private var pitch_bat: Int = -1
 
     //mp3音源
     private var mp: MediaPlayer? = null
@@ -59,13 +60,15 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
 
         val randomInt = Random.nextInt(10)
         if(randomInt < 5){
-            imageView.setBackgroundResource(R.drawable.bating_swing)
+            imageView.setBackgroundResource(R.drawable.pitching_swing)
             val odaiView: ImageView = findViewById(R.id.odai)
-            odaiView.setImageResource(R.drawable.odai_swing)
+            odaiView.setImageResource(R.drawable.pitching_swing_font)
+            pitch_bat = 0
         }else{
             imageView.setBackgroundResource(R.drawable.pitching_swing)
             val odaiView: ImageView = findViewById(R.id.odai)
-            odaiView.setImageResource(R.drawable.odai_pitching)
+            odaiView.setImageResource(R.drawable.pitching_swing_font)
+            pitch_bat = 1
         }
 
         period = 100
@@ -139,7 +142,12 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
         ry = event.values[1] - gy
         rz = event.values[2] - gz
         Log.i(TAG, "x=$rx, y=$ry, z=$rz")
-        weighted_acceleration = Math.sqrt((rx * rx + ry * ry + rz * rz).toDouble())
+        //weighted_acceleration = Math.sqrt((rx * rx + ry * ry + rz * rz).toDouble())
+        if(pitch_bat == 0)
+            weighted_acceleration = Math.abs(rx.toDouble()) //Math.sqrt((rx * rx + ry * ry + rz * rz).toDouble())
+        else{
+            weighted_acceleration = Math.abs(ry.toDouble())
+        }
         Log.i(TAG, weighted_acceleration.toString())
         if (weighted_acceleration > homerun_bound && !swinged_flag) {
             swing_count++
@@ -199,7 +207,7 @@ class AlarmSwingActivity : AppCompatActivity(), SensorEventListener, Runnable {
         private const val ALPHA = 0.75f
         private val TAG = AlarmSwingActivity::class.java.simpleName
         private const val swing_skii = 5
-        private const val swinged_skii = 20
-        private const val homerun_bound = 20.0
+        private const val swinged_skii = 5
+        private const val homerun_bound = 60
     }
 }

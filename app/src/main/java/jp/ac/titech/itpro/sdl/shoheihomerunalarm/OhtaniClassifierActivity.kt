@@ -33,7 +33,6 @@ class OhtaniClassifierActivity: AppCompatActivity() {
             lifecycleScope.launch {
                 // 推論結果を取得
                 val output = classifyImage(bitmap!!)
-                // viewにフォーマットした推論結果を2個表示
                 if(output){
                     resultTextView.text = "あなたは大谷翔平ですね！？！？"
                 }

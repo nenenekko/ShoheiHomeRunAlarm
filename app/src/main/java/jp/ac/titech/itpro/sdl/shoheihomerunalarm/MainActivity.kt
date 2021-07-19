@@ -83,9 +83,6 @@ class MainActivity : AppCompatActivity(), CustomAdapterListener, TimePickerDialo
         }
 
         button2.setOnClickListener{
-            Toast.makeText(
-                    context, "Bottun2 ", Toast.LENGTH_SHORT
-            ).show()
             showTimePickerDialog(it)
         }
 
@@ -105,11 +102,21 @@ class MainActivity : AppCompatActivity(), CustomAdapterListener, TimePickerDialo
 
         button4.setOnClickListener{
             //アラームを受け取って起動するActivityを指定、起動
+            val notification = Intent(context, AlarmSwingActivity::class.java)
+            //画面起動に必要
+            notification.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            context!!.startActivity(notification)
+        }
+
+        /*
+        button4.setOnClickListener{
+            //アラームを受け取って起動するActivityを指定、起動
             val notification = Intent(context, WebpageActivity::class.java)
             //画面起動に必要
             notification.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context!!.startActivity(notification)
         }
+         */
 
         button5.setOnClickListener{
             val notification = Intent(context, OhtaniClassifierActivity::class.java)
@@ -215,7 +222,7 @@ class MainActivity : AppCompatActivity(), CustomAdapterListener, TimePickerDialo
     fun setAlarm(alarmHour: Int, alarmMinute: Int, index: Int){
         val intent = Intent(
                 context,
-                AlarmBroadcastReceiver::class.java
+                ShoheiHomerunReceiver::class.java
         )
         intent.setType(index.toString())
         val pending = PendingIntent.getBroadcast(
@@ -237,7 +244,16 @@ class MainActivity : AppCompatActivity(), CustomAdapterListener, TimePickerDialo
         //Toast.makeText(context, java.lang.String.format("%02d時%02d分に起こします", alarmHour, alarmMinute), Toast.LENGTH_LONG).show()
 
         val am = context.getSystemService(ALARM_SERVICE) as AlarmManager
-        am[AlarmManager.RTC_WAKEUP, cal.timeInMillis] = pending
+
+        // With setInexactRepeating(), you have to use one of the AlarmManager interval
+        // constants--in this case, AlarmManager.INTERVAL_DAY.
+
+        am?.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                cal.timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                pending
+        )
         Log.v(TAG, cal.timeInMillis.toString() + "ms")
         Log.v(TAG, "アラームセット完了")
     }
@@ -275,7 +291,12 @@ class MainActivity : AppCompatActivity(), CustomAdapterListener, TimePickerDialo
         }
 
         val am = context.getSystemService(ALARM_SERVICE) as AlarmManager
-        am[AlarmManager.RTC_WAKEUP, cal.timeInMillis] = pending
+        am?.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                cal.timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                pending
+        )
         Log.v(TAG, cal.timeInMillis.toString() + "ms")
         Log.v(TAG, "アラームセット完了")
     }
